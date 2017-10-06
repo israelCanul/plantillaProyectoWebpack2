@@ -1,0 +1,71 @@
+.footer {
+  /* teléfonos */ }
+  .footer .phone {
+    color: #000000;
+    font-weight: 200;
+    text-decoration: none; }
+  @media only screen and (min-width: 767px) {
+    .footer {
+      padding: 20px 5px;
+      display: flex; } }
+  .footer-lateral {
+    padding-top: 10px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+    .footer-lateral img {
+      width: 200px; }
+    .footer-lateral i {
+      font-size: 1rem;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      color: #F76b46;
+      transition: color 0.3s ease-in; }
+      .footer-lateral i:hover {
+        color: #00467f !important; }
+      @media only screen and (min-width: 767px) {
+        .footer-lateral i {
+          font-size: 2rem;
+          margin-right: 20px; } }
+  .footer-main {
+    flex: 2; }
+    .footer-main-section1 {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center; }
+      .footer-main-section1 img {
+        width: 30%;
+        margin: 5px 10px; }
+        @media only screen and (min-width: 767px) {
+          .footer-main-section1 img {
+            margin: 5px 10px;
+            width: 35%; } }
+        @media only screen and (min-width: 1400px) {
+          .footer-main-section1 img {
+            width: 20%; } }
+      .footer-main-section1 p {
+        font-family: 'open-sans-light';
+        font-size: 0.9rem; }
+        @media only screen and (min-width: 767px) {
+          .footer-main-section1 p {
+            font-size: 1rem; } }
+        @media only screen and (min-width: 1400px) {
+          .footer-main-section1 p {
+            font-size: 1.2rem; } }
+        .footer-main-section1 p span {
+          font-family: 'oswald-bold';
+          font-size: 1rem;
+          color: #000000; }
+    .footer-main-section2 {
+      display: flex;
+      flex-direction: column;
+      align-items: center; }
+      .footer-main-section2 p {
+        font-family: 'open-sans-light';
+        font-size: 0.8rem;
+        text-align: center; }
+        @media only screen and (min-width: 767px) {
+          .footer-main-section2 p {
+            font-size: 1rem; } }

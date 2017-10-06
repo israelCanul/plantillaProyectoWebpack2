@@ -1,0 +1,127 @@
+.specials-page{
+  margin-top: $headerMin;
+  @include desktop{
+  margin-top: $headerMax;
+  };
+  .banner{
+
+    .wrapper{
+      position: relative;
+      img{
+        position: relative;
+        width: 100%;
+      }
+      .content{
+        z-index: 1;
+        position: absolute;
+        top:0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        h1{
+          text-transform: uppercase;
+          text-shadow: 1px 1px black;
+          font-size: 1.1rem;
+          @include tablet{
+            font-size: 1.6rem;
+          };
+          @include desktop{
+            font-size: 2rem;
+          };
+        }
+      }
+    }
+  }
+  .SpecialOfferSection{
+    width: 100%;
+    position: relative;
+    @include clearfix;
+    &-wrapSpecials{
+      position: relative;
+      width: 100%;
+
+      @include tablet{
+        display: flex;
+      };
+      @include clearfix;
+      .SpecialItem{
+
+          position: relative;
+          height: auto;
+          display: flex;
+          flex-direction: column;
+          @include tablet{
+
+            overflow: hidden;
+            float: left;
+            position: relative;
+          };
+          img.bg{
+            left: 0;
+            top: 0;
+            z-index: 1;
+            width: 100%;
+            flex: 1;
+            // width: 90%;
+            // margin-left: 5%;
+          }
+          &-description{
+            flex: 1;
+            bottom: 0;
+            left:0;
+            width: 100%;
+            height: auto;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            h1{
+
+              font-size: 1.5rem;
+
+            }
+            h2{
+
+              font-size: 1.2rem;
+            }
+            .priceDescriptions{
+flex: 1;
+              display: flex;
+              i.noprice{
+                flex:1;
+              }
+              .priceItem{
+                flex: 1;
+                label{
+                }
+                p{
+                }
+              }
+            }
+            .includes{
+
+              display: flex;
+              flex-direction: row;
+              label{
+
+              }
+              img{
+                height: auto;
+              }
+            }
+            a.btn{
+              margin-top: 20px;
+
+              text-decoration: none;
+              float: left;
+              text-transform: uppercase;
+              &:hover{
+                color : $naranja-diseno !important;
+              }
+            }
+          }
+
+      }
+    }
+  }
+}

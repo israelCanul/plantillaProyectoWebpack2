@@ -1,0 +1,540 @@
+.input{
+  &.label{
+    //height: 45px;
+    border: 1px solid transparent;
+    padding: 15px 10px;
+    font-size: 1.2rem;
+
+  }
+  &.default{
+    font-size: 1.2rem;
+  }
+
+}
+
+.wrap-book{
+
+  width: 100%;
+
+  @include clearfix;
+  .book{
+    z-index: 6;
+    //position: absolute;
+
+  &-title{
+    background-color: #171B25;
+    display: flex;
+    @include clearfix;
+    h1{
+      font-size: 1rem;
+      color: $naranja-diseno;
+      text-align: left;
+      font-family: 'oswald-regular';
+      text-transform: uppercase;
+      padding-left:10px;
+      margin-right: 10px;
+      @include tablet{
+        padding-left: 20px;
+        margin-right: 20px;
+      };
+    }
+    .left{
+      display: flex;
+      justify-content: center;
+      button{
+        flex: 1;
+        border-radius: 0px;
+        -webkit-appearance: none;
+        border-width: 0;
+        background-color: $colorBackgroundform;
+        color: $blanco;
+        font-size: 0.8rem;
+        font-family: 'oswald';
+        width: 100px;
+        text-transform: uppercase;
+        padding: 10px 5px;
+        @include tablet{
+          width: 150px;
+          font-size: 1rem;
+        };
+        &.active{
+          background-color: $naranja-diseno;
+          transition: all 0.3s ease-in;
+          &:hover{
+            background-color: $naranja-diseno-fuerte;
+          }
+        }
+      }
+    }
+    .right{
+      flex: 1;
+      display: none;
+      justify-content: flex-end;
+      align-items:center;
+      padding-right:10px;
+      @include tablet{
+        padding-right:20px;
+        display: flex;
+      };
+      a{
+        color: $blanco;
+        font-size:0.6rem;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-family: 'oswald';
+        @include tablet{
+          font-size: 1rem;
+        };
+        i{
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+  &-form{
+    background: #2b3143;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease-in;
+    @include tablet{
+      flex-direction: row;
+    };
+    @include clearfix;
+    .column{
+      flex: 1;
+    }
+    &-inputField{
+      display: flex;
+      float: left;
+      position: relative;
+      height: 80px;
+
+    &.oneWay{
+      width:100%;
+      box-sizing: border-box;
+      padding:5px 10px;
+      align-items: center;
+      justify-content: center;
+      .side{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        transition: height 0.3s ease-in;
+        height: 100%;
+        justify-content: center;
+        &.type{
+          overflow: hidden;
+        }
+        &.oneway{
+          height: 0%;
+        }
+        p{
+          margin: 0px;
+          label{
+            flex: 1;
+            text-align: center;
+            color: white;
+            font-size:1rem;
+            font-family: 'oswald';
+            padding:0px 5px;
+            text-transform: uppercase;
+          }
+        }
+
+      }
+    }
+    &.date{
+      width: 100%;
+      box-sizing: border-box;
+      padding:0px 10px;
+
+      flex-direction: column;
+      float: left;
+
+      &.round{
+          width: 60%;
+      }
+      label{
+        color: $blanco;
+        font-family: 'oswald';
+        font-size: 1rem;
+      }
+
+      .react-flex{
+
+          font-family: 'oswald' !important;
+          padding: 5px 5px;
+          box-sizing: border-box;
+          background-color: $colorBackgroundform;
+          border-color: $colorBackgroundform;
+
+          &-item{
+            color: $blanco;
+          }
+          .react-date-picker__month-view-cell{
+            color: $blanco;
+          }
+          .react-date-picker__month-view-day--disabled{
+            color: gray;
+          }
+          .react-date-picker__month-view-day--active{
+            background-color: $naranja-diseno;
+            .react-date-picker__month-view-day-text{
+              border-width: 0;
+              background: transparent;
+            }
+
+          }
+          .react-date-picker__month-view-day--this-month{
+            .react-date-picker__month-view-day-text{
+              &:hover{
+                color: $negro;
+              }
+            }
+
+          }
+          .react-date-picker__month-view-day--next-month{
+            @extend .react-date-picker__month-view-day--this-month;
+          }
+
+          .react-date-field__calendar-icon{
+            background:  $blanco;
+            border: 2px solid $blanco;
+          }
+          input{
+            width: 100%;
+            color: $blanco;
+            font-family: 'oswald';
+            font-size: 1rem;
+            background-color: $colorBackgroundform;
+          }
+      }
+    }
+    &.hotel{
+      width:100%;
+      box-sizing: border-box;
+      padding:0px 10px;
+
+      flex-direction: column;
+      label{
+        color: white;
+        font-size:1rem;
+        font-family: 'oswald-light';
+      }
+        .Select{
+
+          &-control{
+            background-color: $colorBackgroundform;
+            border-color: $colorBackgroundform;
+            border-radius: 0px;
+            padding:4px 5px;
+            .Select-arrow-zone{
+              span{
+                border-color: #F76b46 transparent transparent;
+              }
+            }
+            .Select-placeholder{
+              color: $blanco;
+              font-family: 'oswald';
+              font-size:0.8rem;// que wey
+            }
+            .Select-value{
+              span{
+                @extend .Select-placeholder;
+              }
+
+            }
+            .Select-input{
+              input{
+                  @extend .Select-placeholder;
+              }
+            }
+          }
+      }
+    }
+    &.people{
+      width:100%;
+      box-sizing: border-box;
+      padding:0px 10px;
+      flex-direction: column;
+        label{
+          color: white;
+          font-size:0.9rem;
+          font-family: 'oswald';
+          padding:0px 5px;
+          text-transform: uppercase;
+        }
+        .Select{
+          &-control{
+            background-color: $colorBackgroundform;
+            border-color: $colorBackgroundform;
+            border-radius: 0px;
+            padding:4px 5px;
+            margin-left: 5px;
+            .Select-arrow-zone{
+              span{
+                border-color: #F76b46 transparent transparent;
+              }
+            }
+            .Select-placeholder{
+              color: $blanco;
+              font-family: 'oswald';
+              font-size:0.8rem;// que wey
+            }
+            .Select-value{
+              span{
+                @extend .Select-placeholder;
+              }
+
+            }
+            .Select-input{
+              input{
+                  @extend .Select-placeholder;
+              }
+            }
+          }
+        }
+
+
+    }
+    &.politica{
+      width: 100%;
+      box-sizing: border-box;
+      padding:5px 10px;
+      align-items: center;
+      float: left;
+      @include tablet{
+       width: 100%;
+      };
+      a{
+        color: white;
+        font-family: 'open-sans-regular';
+        font-weight: bold;
+        text-decoration: none;
+        i{
+          color: $naranja-diseno;
+        }
+      }
+    }
+    &.btnBook{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      button{
+        flex: 1;
+            -webkit-appearance: none;
+            background-color: $naranja-diseno;
+            border-width: 0px;
+            text-transform: uppercase;
+            color: $blanco;
+            padding:10px 5px;
+            font-size: 1rem;
+            border-radius:5px;
+            font-family: 'open-sans-regular';
+            transition: all 0.3s ease-in;
+            &:hover{
+              background-color: $naranja-diseno-fuerte;
+            }
+      }
+    }
+
+   }
+  }
+}
+  .wrap-results{
+    background-color: $blanco;
+
+    // @include desktop{
+    //   z-index: 4;
+    //   top: 110px;
+    //   width: 60%;
+    //   left: 20%;
+    //   position: absolute;
+    // };
+    .load-results{
+      background-color: $naranja-diseno;
+      display: flex;
+      align-items: center;
+      p{
+        flex: 1;
+        margin:0px;
+        padding:20px 10px;
+        color: $blanco;
+        font-family: 'open-sans-regular';
+        font-size: 1.2em;
+      }
+      i{
+        font-size: 2.5em;
+        margin-right:10px;
+        transition: background-color 0.3s ease-in;
+        &:hover{
+          background-color: $gris;
+          cursor: pointer;
+        }
+      }
+    }
+    .results{
+      height: 0px;
+      transition: height 0.3s ease-in;
+      overflow: hidden;
+      margin-bottom: 10px;
+      box-shadow: 1px 1px 5px 1px #666666;
+      @include desktop{
+
+      };
+      &.active{
+        height: auto;
+      }
+
+      &-title{
+        text-align: right;
+        font-family: 'open-sans-regular';
+        color: $gris-texto;
+        padding-right: 10px;
+      }
+      &-result{
+
+        position: relative;
+        padding:5px 10px;
+        @include tablet{
+          padding: 10px 15px;
+          width:80%;
+          left: 10%;
+        };
+        .wrap{
+          position: relative;
+          padding:5px;
+          padding-bottom: 20px;
+          background-color: $blanco;
+          margin-bottom:8px;
+          display: flex;
+          overflow: hidden;
+          @include tablet{
+            padding-left:20px;
+            padding-right:20px;
+          };
+          &-image{
+
+              flex: 1;
+
+            img{
+              width: 100%;
+            }
+          }
+          &-description{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 2;
+            padding:3px;
+            padding-left:25px;
+            @include desktop{
+              flex: 1;
+            };
+            h2{
+                margin: 0px;
+                font-family: 'open-sans-light';
+                color: $gris-texto;
+            }
+            h3{
+              margin: 0px;
+              font-family: 'open-sans-light';
+              color: $naranja-diseno;
+              font-size:0.9rem;
+            }
+            &-text{
+              font-family: 'open-sans-regular';
+              color: $gris-texto;
+
+              span{
+                  font-size:0.9rem;
+              }
+            }
+            &-prices{
+              color: $negro;
+              label{
+                font-family: 'oswald-bold';
+                font-weight: 900;
+                font-size:1.5rem;
+                small{
+                  color: $negro;
+                  font-family: 'oswald-light';
+
+                  @include desktop{
+
+                  };
+                }
+                span{
+                  font-family: 'oswald-light';
+                }
+              }
+            }
+            &-button{
+                  -webkit-appearance: none;
+                  background-color: $naranja-diseno;
+                  transition: all 0.3s ease-in;
+                  padding: 10px 15px;
+                  border-width: 0px;
+                  color: $blanco;
+                  font-family: 'open-sans-regular';
+                  font-size: 1rem;
+                  margin-top: 10px;
+
+                  width:100%;
+                  @include tablet{
+                    width:50%;
+                  };
+                  &:hover{
+                    background-color: $naranja-diseno-fuerte;
+
+                  }
+            }
+            &-info{
+              text-align: right;
+              color: $naranja-diseno-fuerte;
+              text-decoration: none;
+              font-family: 'open-sans-regular';
+
+            }
+          }
+          &-information{
+            bottom: 0px;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            position: absolute;
+            transition: height 0.3s ease-in;
+            background-color: rgba(255,255,255,1);
+
+            overflow: scroll;
+
+            &.active{
+              height: 100%;
+
+              border: 1px solid $gris;
+            }
+            p{
+              text-align: justify;
+              color: rgba(0,0,0,0.9);
+              font-family: 'open-sans-regular';
+            }
+            &-action{
+              width: 100%;
+              @include clearfix;
+              text-align: right;
+              i{
+
+                color: $negro;
+                &:hover{
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

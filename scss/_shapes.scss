@@ -1,0 +1,479 @@
+.shapes{
+
+@each $medidas, $size in $sizes {
+  @if $medidas=="base" {
+      &.icon{
+        &.burger{
+          width: #{$size*5};
+          height: #{$size*5};
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items:center;
+          padding: 5px;
+          box-sizing: border-box;
+          transition: all 0.5s ease-in;
+          .square{
+            width: 80%;
+            flex: 1;
+            margin-top: 4px;
+            margin-bottom: 4px;
+          }
+          &.open{
+            position: relative;
+            padding: 0px;
+            .square{
+              width: 100%;
+              flex: 1;
+              justify-content: center;
+              align-items: center;
+              position: absolute;
+              width: 4px;
+              height: 4px;
+              margin-top: 0px;
+              margin-bottom: 0px;
+              transition: all 0.5s ease-in;
+              &.item1{
+                width: 80%;
+                transform: rotate(50deg);
+              }
+              &.item2{
+                display: none;
+                transform: rotate(-50deg);
+              }
+              &.item3{
+                width: 80%;
+                transform: rotate(-50deg);
+              }
+            }
+          }
+        }
+        &-close{
+          position: relative;
+          right: 0px;
+          top: 0px;
+          width: #{$size*5};
+          height: #{$size*5};
+          opacity: 0.7;
+          &:hover {
+            opacity: 1;
+          }
+          &:before {
+            transform: rotate(45deg);
+            position: absolute;
+            left:#{($size*5)/2};
+            content: ' ';
+            height: #{($size*5)+1};
+            width: 2px;
+            background-color: white;
+          }
+          &:after {
+            transform: rotate(-45deg);
+            position: absolute;
+            left:#{($size*5)/2};
+            content: ' ';
+            height: #{($size*5)+1};
+            width: 2px;
+            background-color: white;
+          }
+        }
+        &-magnifying-glass {
+          display: inline-block;
+          -webkit-box-sizing: content-box;
+          -moz-box-sizing: content-box;
+          box-sizing: content-box;
+          width: 0.4em;
+          height: 0.4em;
+          position: relative;
+          border: 0.1em solid #1abc9c;
+          -webkit-border-radius: 0.35em;
+          border-radius: 0.35em;
+          //font: normal 10em/normal Arial, Helvetica, sans-serif;
+          font: normal #{$size*3}/normal Arial, Helvetica, sans-serif;
+          color: rgba(0,0,0,1);
+          -o-text-overflow: clip;
+          text-overflow: clip;
+          &:before{
+            display: inline-block;
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+            width: 0.45em;
+            height: 0.1em;
+            position: absolute;
+            content: "";
+            right: -0.35em;
+            bottom: -0.2em;
+            border: none;
+            font: normal 100%/normal Arial, Helvetica, sans-serif;
+
+            color: rgba(0,0,0,1);
+            -o-text-overflow: clip;
+            text-overflow: clip;
+            background: #1abc9c;
+            text-shadow: none;
+            -webkit-transform: rotateZ(45deg)   ;
+            transform: rotateZ(45deg)   ;
+          }
+
+          @each $color_name, $color in $colors {
+            @each $color_type, $color_value in $color {
+              @if $color_type == "base" {
+                &-#{$color_name} {
+                  border-color: $color_value ;
+
+                  &:before{
+                    background: $color_value ;
+                    font: normal #{$size*3}/normal Arial, Helvetica, sans-serif;
+                  }
+                }
+              }
+              @else if $color_name != "shades" {
+                &-#{$color_name}.#{$color_type} {
+                  border-color: $color_value ;
+                  &:before{
+                    background: $color_value ;
+                    font: normal #{$size*3}/normal Arial, Helvetica, sans-serif;
+                  }
+                }
+              }
+              @else if $color_name == "shades" {
+                &-#{$color_name}-#{$color_type} {
+                  border-color: $color_value ;
+                  &:before{
+                    background: $color_value ;
+                    font: normal #{$size*3}/normal Arial, Helvetica, sans-serif;
+                  }
+                }
+              }
+            }
+          }
+
+
+        }
+        &-circle {
+           width: $size;
+           height: $size;
+           background: blue;
+           -moz-border-radius: $size/2;
+           -webkit-border-radius: $size/2;
+           border-radius: $size/2;
+           .circle{
+           @each $color_name, $color in $colors {
+             @each $color_type, $color_value in $color {
+               @if $color_type == "base" {
+                 &-#{$color_name} {
+                   background: $color_value ;
+                 }
+               }
+               @else if $color_name != "shades" {
+                 &-#{$color_name}.#{$color_type} {
+                   background: $color_value ;
+                 }
+               }
+               @else if $color_name == "shades" {
+                 &-#{$color_name}-#{$color_type} {
+                   background: $color_value ;
+                 }
+               }
+             }
+           }
+          }
+
+
+        }
+        &-triangle{
+          &-left{
+            width: 0;
+            height: 0;
+            border-top: $size solid transparent;
+            border-right: #{$size*2} solid white;
+            border-bottom: $size solid transparent;
+            &.shade{
+            border-right-color: darken( white, 40% );
+            }
+          }
+          &-right{
+            width: 0;
+            height: 0;
+            border-top: $size solid transparent;
+            border-left:#{$size*2} solid white;
+            border-bottom: $size solid transparent;
+            &.shade{
+            border-left-color: darken( white, 40% );
+            }
+          }
+          &-up {
+            width: 0;
+            height: 0;
+            border-left: $size solid transparent;
+            border-right: #{$size} solid transparent;
+            border-bottom: $size solid darken( white, 40% );
+          }
+          &-down {
+            width: 0;
+            height: 0;
+            border-left: $size solid transparent;
+            border-right: #{$size} solid transparent;
+            border-top: $size solid darken( white, 40% );
+          }
+        }
+      }
+
+  }@else{
+    &.#{$medidas}{
+      &.icon{
+        &.burger{
+          width: #{$size*5};
+          height: #{$size*5};
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items:center;
+          padding: 5px;
+          box-sizing: border-box;
+          transition: all 0.5s ease-in;
+          .square{
+            width: 80%;
+            flex: 1;
+            margin-top: 4px;
+            margin-bottom: 4px;
+          }
+          &.open{
+            position: relative;
+            padding: 0px;
+            .square{
+              width: 100%;
+              flex: 1;
+              justify-content: center;
+              align-items: center;
+              position: absolute;
+              width: 4px;
+              height: 4px;
+              margin-top: 0px;
+              margin-bottom: 0px;
+              transition: all 0.5s ease-in;
+              &.item1{
+                width: 80%;
+                transform: rotate(50deg);
+              }
+              &.item2{
+                display: none;
+                transform: rotate(-50deg);
+              }
+              &.item3{
+                width: 80%;
+                transform: rotate(-50deg);
+              }
+            }
+          }
+        }
+        &-close{
+          position: relative;
+          right: 0px;
+          top: 0px;
+          width: #{$size*5};
+          height: #{$size*5};
+          opacity: 0.7;
+          &:hover {
+            opacity: 1;
+          }
+          &:before {
+            transform: rotate(45deg);
+            position: absolute;
+            left: #{($size*5)/2};
+            content: ' ';
+            height: #{($size*5)+1};
+            width: 2px;
+            background-color: white;
+          }
+          &:after {
+            transform: rotate(-45deg);
+            position: absolute;
+            left: #{($size*5)/2};
+            content: ' ';
+            height: #{($size*5)+1};
+            width: 2px;
+            background-color: white;
+          }
+        }
+        &-circle {
+           width: $size;
+           height: $size;
+           background: blue;
+           -moz-border-radius: $size/2;
+           -webkit-border-radius: $size/2;
+           border-radius: $size/2;
+           .circle{
+           @each $color_name, $color in $colors {
+             @each $color_type, $color_value in $color {
+               @if $color_type == "base" {
+                 &-#{$color_name} {
+                   background: $color_value ;
+                 }
+               }
+               @else if $color_name != "shades" {
+                 &-#{$color_name}.#{$color_type} {
+                   background: $color_value ;
+                 }
+               }
+               @else if $color_name == "shades" {
+                 &-#{$color_name}-#{$color_type} {
+                   background: $color_value ;
+                 }
+               }
+             }
+           }
+          }
+        }
+
+        &-triangle{
+          &-left{
+            width: 0;
+            height: 0;
+            border-top: $size solid transparent;
+            border-right: #{$size*2} solid white;
+            border-bottom: $size solid transparent;
+            &.shade{
+              border-right-color: darken( white, 40% );
+            }
+          }
+          &-right{
+            width: 0;
+            height: 0;
+            border-top: $size solid transparent;
+            border-left:#{$size*2} solid white;
+            border-bottom: $size solid transparent;
+            &.shade{
+              border-left-color: darken( white, 40% );
+            }
+          }
+          &-up {
+            width: 0;
+            height: 0;
+            border-left: $size solid transparent;
+            border-right: #{$size} solid transparent;
+            border-bottom: $size solid darken( white, 40% );
+          }
+          &-down {
+            width: 0;
+            height: 0;
+            border-left: $size solid transparent;
+            border-right: #{$size} solid transparent;
+            border-top: $size solid darken( white, 40% );
+          }
+        }
+        &-circle{
+          width: #{$size*3};
+          height: #{$size*3};
+          border-radius:100px;
+          background: red;
+          @each $color_name, $color in $colors {
+            @each $color_type, $color_value in $color {
+              @if $color_type == "base" {
+                .#{$color_name} {
+                  background-color: $color_value ;
+                }
+              }
+              @else if $color_name != "shades" {
+                .#{$color_name}.#{$color_type} {
+                  background-color: $color_value ;
+                }
+              }
+            }
+          }
+          &.shade{
+            background: darken( red, 40% );
+            border-right-color: darken( white, 40% );
+          }
+          &.wrap{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+        &-dialog{
+          width: 0;
+          height: 0;
+          border-top: #{$size*3} solid white;
+          border-left: #{$size*3} solid transparent;
+        }
+        &-magnifying-glass {
+          display: inline-block;
+          -webkit-box-sizing: content-box;
+          -moz-box-sizing: content-box;
+          box-sizing: content-box;
+          width: 0.4em;
+          height: 0.4em;
+          position: relative;
+          border: 0.1em solid #1abc9c;
+          -webkit-border-radius: 0.35em;
+          border-radius: 0.35em;
+          //font: normal 10em/normal Arial, Helvetica, sans-serif;
+          font: normal #{$size*3}/normal Arial, Helvetica, sans-serif;
+          color: rgba(0,0,0,1);
+          -o-text-overflow: clip;
+          text-overflow: clip;
+          &:before{
+            display: inline-block;
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+            width: 0.45em;
+            height: 0.1em;
+            position: absolute;
+            content: "";
+            right: -0.35em;
+            bottom: -0.2em;
+            border: none;
+            font: normal 100%/normal Arial, Helvetica, sans-serif;
+
+            color: rgba(0,0,0,1);
+            -o-text-overflow: clip;
+            text-overflow: clip;
+            background: #1abc9c;
+            text-shadow: none;
+            -webkit-transform: rotateZ(45deg)   ;
+            transform: rotateZ(45deg)   ;
+          }
+
+          @each $color_name, $color in $colors {
+            @each $color_type, $color_value in $color {
+              @if $color_type == "base" {
+                &-#{$color_name} {
+                  border-color: $color_value ;
+
+                  &:before{
+                    background: $color_value ;
+                    font: normal #{$size*3}/normal Arial, Helvetica, sans-serif;
+                  }
+                }
+              }
+              @else if $color_name != "shades" {
+                &-#{$color_name}.#{$color_type} {
+                  border-color: $color_value ;
+                  &:before{
+                    background: $color_value ;
+                    font: normal #{$size*3}/normal Arial, Helvetica, sans-serif;
+                  }
+                }
+              }
+              @else if $color_name == "shades" {
+                &-#{$color_name}-#{$color_type} {
+                  border-color: $color_value ;
+                  &:before{
+                    background: $color_value ;
+                    font: normal #{$size*3}/normal Arial, Helvetica, sans-serif;
+                  }
+                }
+              }
+            }
+          }
+
+
+        }
+      }
+    }
+  }
+}
+}

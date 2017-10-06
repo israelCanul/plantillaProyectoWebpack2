@@ -1,0 +1,151 @@
+//estilos para el custom del gallery
+.image-gallery-content{
+  .wrap-news{
+    display : none;
+    background-color: rgba(#000,0.5);
+    z-index: 4;
+    @include tablet{
+      display: initial;
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
+      width: 40%;
+      height: 60%;
+      margin-right:10px;
+      margin-bottom:10px;
+      overflow: hidden;
+    }
+    @include desktop{
+      width: 35%;
+      height: 45%;
+    };
+    h2{
+      font-size: 0.8rem;
+      color: white;
+      line-height: normal;
+      text-align: center;
+      @include desktop{
+        font-size: 1rem;
+      }
+    }
+    .wrap-items{
+      overflow: hidden;
+      position: relative;
+      .container-items{
+        position: relative;
+        transition: top 0.5s ease-out;
+      }
+      .item{
+        //background-color: green;
+        padding:5px 0px;
+        position: relative;
+        width: 100%;
+        @include tablet{
+          padding:10px 0px;
+        };
+        .bg{
+          position: absolute;
+          top:0px;
+          left:0px;
+          width:100%;
+          height:100%;
+          background-color: rgba(#000,0.3);
+          transition: height 0.3s ease-out;
+          &.active{
+            height:0%;
+          }
+        }
+        .reset{
+          margin: 0px;
+          padding: 0px;
+          line-height: normal;
+        }
+        &-title{
+          @extend .reset;
+          padding-left:10px !important;
+          color: white;
+          text-align: left;
+          font-size: 1.1rem;
+        }
+        &-category{
+          @extend .reset;
+          font-size: 0.9rem;
+          padding-left:10px !important;
+          color: white;
+          span{
+            color: $naranja-diseno;
+          }
+        }
+      }
+    }
+  }
+  .image-gallery-bullets .image-gallery-bullet {
+      border: 1px solid #000;
+      padding: 5.7px;
+      @include tablet{
+        padding: 5.7px;
+        border: 1px solid #fff;
+      };
+  }
+  .image-gallery-slide{
+     .descriptionWrap {
+          //background: rgba(0, 0, 0, 0.4);
+          bottom: 0px;
+          left: 0px;
+          width: 50%;
+          height: 70%;
+          left: 0;
+          line-height: 1;
+          padding: 10px 0px;
+          position: relative;
+          white-space: normal;
+          text-transform: uppercase;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          @include tablet{
+            position: absolute;
+            color: white;
+          };
+          &-title{
+            font-family: 'oswald';
+            margin: 0px;
+            padding: 0px;
+            padding-left:20px;
+            font-size: 4rem;
+            @include tablet{
+              font-size: 2rem;
+            }
+            @include desktop{
+              font-size: 3rem;
+            }
+          }
+          &-subtitle{
+            font-family: 'oswald-light';
+            margin: 0px;
+            padding: 0px;
+            padding-left:20px;
+            font-size: 2.5rem;
+          }
+          &-link{
+            width: 70%;
+            margin: 0px;
+            margin-top:20px;
+            background-color: $naranja-diseno;
+            display: flex;
+            align-items: center;
+            @include tablet{
+              width: 50%;
+            };
+            a{
+              padding: 10px 10px;
+              color: white;
+              text-decoration: none;
+              font-family: 'oswald';
+              width: 100%;
+              text-align: right;
+            }
+          }
+      }
+  }
+}
