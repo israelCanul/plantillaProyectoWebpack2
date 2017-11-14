@@ -16,14 +16,6 @@ const commonsPlugin = new webpack.optimize.CommonsChunkPlugin({name : 'commons',
 export default () => ({
   entry:{// directorios de entrada
     index :path.join(__dirname, 'src/index.js'),
-    tour :'./src/tour_description.js',
-    cart : './src/cart.js',
-    checkout : './src/checkout.js',
-    category : './src/category.js',
-    transportation : './src/transportation.js',
-    gallery : './src/gallery.js',
-    headerfooter : './src/headerfooter.js',
-    SpecialOffers : './src/special_offers.js'
   },
   output: {// archivos de salida
     path: path.join(__dirname,'/build'),

@@ -8,18 +8,10 @@
 @import "headerComponent";
 @import "footer";
 @import "index";
-@import "tour";
-@import "cart";
-@import "category";
-@import "_gallerySection";
-@import "transportation";
-@import "checkout";
 @import '../node_modules/react-image-gallery/styles/scss/image-gallery.scss';
 @import "../node_modules/react-date-picker/style/index.scss";
 @import "../node_modules/react-select/dist/react-select.css";
-@import "customGallery";
-@import "compare_component";
-//@import "SearchComponent";
+
 
 body{
   margin: 0px;
