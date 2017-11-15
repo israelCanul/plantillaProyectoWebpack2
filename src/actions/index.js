@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as firebase from "firebase";
+import Firebase from "firebase";
 
 
 
@@ -7,15 +7,19 @@ export const FETCHTOURS = 'FETCHTOURS';
 
 import {configFirebase} from '../data_config';
 
-//iniciamos firebase con las configuraciones correspondientes
-firebase.initializeApp(configFirebase);
 
+Firebase.initializeApp(configFirebase);
+let dataTours  =  Firebase.database().ref('/dataTours');
 
 export function fetchTours(){
+  return (dispatch) => {
+    dataTours.on('value',snapshot =>{
+      dispatch({
+         type: FETCHTOURS,
+         payload : snapshot.val()
+       });
+    })
+  };
 
-  let v =  firebase.database().ref('/dataTours').once('value');
-  return {
-     type: FETCHTOURS,
-     payload : v
-   }
+
 }

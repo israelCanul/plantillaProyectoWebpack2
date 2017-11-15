@@ -6,21 +6,7 @@ export default function(state = INITIAL_STATE, action) {
   switch(action.type) {
   case FETCHTOURS:
     let arrayTours = {items : [],banner : [],categories : [] }
-    action.payload.forEach(function(childSnapshot) {
-         switch (childSnapshot.key) {
-           case "items":
-             arrayTours.items = childSnapshot.val();
-             break;
-           case "banner":
-             arrayTours.banner = childSnapshot.val();
-             break;
-           case "categories":
-             arrayTours.categories = childSnapshot.val();
-             break;
-         default:
-         }
-    });
-    return { ...state, tours: arrayTours};
+    return { ...state, tours:action.payload};
   default:
     return state;
   }

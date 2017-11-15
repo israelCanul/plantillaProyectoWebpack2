@@ -5,11 +5,10 @@ import { createStore, applyMiddleware } from 'redux';
 
 import reducers from './reducers';
 import promise from 'redux-promise';
+import thunk from 'redux-thunk';
 import Home from './components/index';
 
-const createStoreWithMiddleware = applyMiddleware(
-  promise
-)(createStore);
+const createStoreWithMiddleware = applyMiddleware(thunk,promise)(createStore);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>

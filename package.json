@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "webpack -p",
-    "start" : "webpack-dev-server"
+    "start": "webpack-dev-server"
   },
   "author": "Israel canul",
   "license": "ISC",
@@ -26,6 +26,7 @@
     "react-select": "^1.0.0-rc.10",
     "redux": "^3.7.2",
     "redux-promise": "^0.5.3",
+    "redux-thunk": "^2.2.0",
     "webpack-preset": "^0.2.0",
     "webpack-preset-babel": "^0.2.0",
     "webpack-preset-babel-stage-2": "^0.2.0",

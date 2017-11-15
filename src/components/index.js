@@ -51,7 +51,7 @@ class Index extends Component{
           items={itemsMenu}
           phone={configApp.phone}/>
         <div className="indexPage row margin-out-bottom">
-          Cuerpo de la plicacion
+          {this.props.data.tours?this.props.data.tours.categories[0].name:""}
         </div>
       <Footer
             logo="http://www.thomasmoretravel.com/img/logoTMT.png"
