@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import ToursReducer from './ToursReducer';
-import BookTransferReducer from './BookTransferReducer';
+
 
 //data config
 import {prodCodeAnalitics} from '../data_config';
@@ -16,8 +16,7 @@ ReactGA.initialize(prodCodeAnalitics);
 
 
 const rootReducer = combineReducers({
-  data: ToursReducer,
-  formulario: BookTransferReducer
+  data: ToursReducer
 });
 
 export default rootReducer;

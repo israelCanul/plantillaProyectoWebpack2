@@ -1,6 +1,4 @@
 import React,{Component} from 'react';
-import ListCartItems from './cart/list_cart';
-import SearchComponent from './tour/search_tours';
 
 
 class Header extends Component{
@@ -13,12 +11,7 @@ class Header extends Component{
         width:document.documentElement.clientWidth,
         height:document.documentElement.clientHeight
       },
-      cart : {
-        x:0,
-        y:0,
-        w:0,
-        h:0
-      }
+
     }
     this.onResizeComponent = this.onResizeComponent.bind(this);
     this.renderMenuMovil = this.renderMenuMovil.bind(this);
@@ -65,38 +58,9 @@ class Header extends Component{
   getPositionItems(){
     //this.setState({cart : {h:this.cartItems.clientHeight,w:this.cartItems.clientWidth,x:this.cartItems.offsetTop,y:this.cartItems.offsetLeft}});
   }
-  openCart(e){
-    e.preventDefault();
-    if(window.innerWidth > 767){
-        this.setState({openCart : !this.state.openCart});
-    }else{
-      window.location = "/cart-items.html";
-    }
-  }
   renderItems(){
     let that = this;
     return this.props.items.map((item,id)=>{
-      if(item.type){
-        // let itemsTrans = Object.keys(that.props.itemsCart).length;
-        // let itemsCart = itemsTrans ;
-        // if(itemsCart==0 ){
-        //   itemsCart = "";
-        // }
-        // return <li id="cart-items" ref={i=>this.cartItems = i }  key={id} className={`menu-item cartMenu  ${item.bookAction?"book-action":""}`}>
-        //   <div className="wrap-link">
-        //     <a onClick={this.openCart.bind(this)} className={`link-item ${that.props.active==id?"active":""}`} href={item.link}><i className="material-icons naranjaDiseno-text">{item.icon}</i><span className="red-text">{itemsCart}</span></a>
-        //   </div>
-        //   <ListCartItems  open={this.state.openCart} items={this.props.itemsCart} transferTypes={this.props.typeTransfers} />
-        // </li>;
-        let toursInfo;
-        if(this.props.toursInfo){
-          //console.dir(this.props.toursInfo);
-          toursInfo = this.props.toursInfo;
-        }
-        return(
-          <SearchComponent open={this.state.openSearch} itemsToSearch={toursInfo} />
-        );
-      }
       return <li key={id} className={`menu-item  ${item.bookAction?"book-action":""}`}><div className="wrap-link"><a className={`link-item ${that.props.active==id?"active":""}`} href={item.link}><i className="material-icons ">{item.icon}</i><span>{item.label}</span></a></div></li>;
     });
   }
@@ -117,7 +81,7 @@ class Header extends Component{
             <div className="container">
             <nav className="nav">
               <div className="nav-wrap-logo">
-                <div className="wrap-logo"><img className="logo" src="/img/logoTMT.png" alt="logo" /></div>
+                <div className="wrap-logo"><img className="logo" src="http://www.thomasmoretravel.com/img/logoTMT.png" alt="logo" /></div>
                 {this.renderMenuMovil()}
               </div>
               <div className={`nav-wrap-items ${this.state.openMenu ? "open":""}`} >

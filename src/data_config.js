@@ -15,31 +15,6 @@ export const configApp = {
   phone : '1 865 733 7715',// se muestra o no el numero de telefono
 };
 
-export const typeTransConfig={
-  ARRIVAL: "ARRIVAL",
-  DEPARTURE: "DEPARTURE",
-  ROUNDTRIP : "ROUNDTRIP"
-}
-export const typeTransDescription={
-  ARRIVALDESC: "Airport-Hotel",
-  DEPARTUREDESC: "Hotel-Airpot",
-  ROUNDTRIPDESC : "Airpot-Hotel-Airport"
-}
-export const dataUserWebService={
-  USERNAME: "FkZSuDbCrfCrpYZZfb6wOg==",
-  USERPASS: "38JKB8B+m+cCUd/4mMH9qQ=="
-}
-export const CODEPRICETOURS = ["CHILD","REGULAR"];// tipos de varcode aceptados por el momento para los precios de tours [VarCode]
-export const ABREVING = "eng";
-export const ABREVESP = "esp";
-
-//urls to get info of outside
-export const DEV_URL_SPECIALOFFERS = 'http://localhost:8080/data_special_offers.json';
-export const DEV_URL = 'http://localhost:8080/data-temp-option-tours.json';
-export const QA_URL = 'https://wdev.rrgapps.com/vtmservice/vtmservice.asmx/';
-export const PROD_URL = 'https://wprdinternet.servicesrr.com:444/vtmservice/vtmservice.asmx/';
-export const METHOD_wmGetTourAttributeSet = "wmGetTourAttributeSet";// lista de tours para el search
-export const METHOD_wmGetItemByPlaceWebVw = "wmGetItemByPlaceWebVw";// to get a specific price of a IDTour
 
 export const ToursOfferTheme = true;
 

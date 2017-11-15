@@ -28,7 +28,7 @@ class Footer extends Component{
           </div>
           <div className="footer-main">
             <div className="footer-main-section1">
-              <img src="/img/cards-type.png" alt=""/>
+              <img src="http://www.thomasmoretravel.com/img/cards-type.png" alt=""/>
               <p>
                 <span>
                   Office hours :
@@ -50,9 +50,7 @@ class Footer extends Component{
               <p>
                 Thomas More Travel Km. 16 Blvd. Kukulcán,  Hotel Zone, Cancún Q. Roo Mexico 77500 © Thomas More Travel. All rights reserved
               </p>
-
             </div>
-
           </div>
           <div className="footer-lateral redes">
             <a href="https://www.facebook.com/thomasmoretravel"> <i className="fa fa-facebook" aria-hidden="true"></i></a>
