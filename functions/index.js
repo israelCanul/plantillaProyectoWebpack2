@@ -1,41 +1,28 @@
 var functions = require('firebase-functions');
-var mifuncion = require('./otrafuncion');
 const admin = require('firebase-admin');
+
+
+
+const gcs = require('@google-cloud/storage')();
+const spawn = require('child-process-promise').spawn;
+const path = require('path');
+const os = require('os');
+const fs = require('fs');
+
+
 admin.initializeApp(functions.config().firebase);
 
-
-// // converts the "text" key of messages pushed to /messages to uppercase
-// exports.upperCaser = functions.database().path('/messages/{id}').on('write', function(event) {
-//   // prevent infinite loops
-//   if (event.data.child('uppercased').val()) { return; }
-//
-//   return event.data.ref.update({
-//     text: event.data.child('text').val().toUpperCase(),
-//     uppercased: true
-//   });
-// });
+//variables for log register [Start]
+const refLog = admin.database().ref('Log');
+//variables for log register [End]
 
 
-exports.addMessage = functions.https.onRequest((req, res) => {
-  // Grab the text parameter.
-  const original = req.query.text
 
-  // Push the new message into the Realtime Database using the Firebase Admin SDK.
-  admin.database().ref('/messages').push({original: original + mifuncion.mifuncion()}).then(snapshot => {
-    // Redirect with 303 SEE OTHER to the URL of the pushed object in the Firebase console.
-    res.redirect(303, snapshot.ref);
-  });
-});
 
 exports.addNewMessage = functions.https.onRequest((req, res) => {
   var original = String(req.query.text);
   original = original.toLowerCase();
   var ref = admin.database().ref('TVMORE');
-
-
-  admin.database().ref('/messages').push({original: "Text passed : "+original }).then(snapshot => {
-
-  });
 
   ref.once('value').then(function(snapshot) {
       var data = {resultCount : 0,results : []};
@@ -45,7 +32,6 @@ exports.addNewMessage = functions.https.onRequest((req, res) => {
           title = title.toLowerCase();
           //var category = childSnapshot.category.val();
           var guardar = false; // flag para guardar el item en la lista de resultados
-
           if(title.search(original) != -1 ){
               guardar = true;
           }
@@ -57,8 +43,6 @@ exports.addNewMessage = functions.https.onRequest((req, res) => {
                  guardar = true;
               }
           });
-
-
           if(guardar){
             data.results.push(childSnapshot.val());
             count ++;
@@ -68,19 +52,172 @@ exports.addNewMessage = functions.https.onRequest((req, res) => {
       //data.push({searchText:original , length : count});
       res.jsonp(data);
   });
+});
 
-  // admin.database().ref('/TVMORE').orderByChild('title')
-  //               .startAt(original)
-  //               .endAt(original)
-  //               .equalTo(original)
-  //               .then(snapshot => {
-  //   // Redirect with 303 SEE OTHER to the URL of the pushed object in the Firebase console.
-  //   res.jsonp({
-  //     value : "mio"
-  //   });
-  //
-  // });
+exports.UpdateItem = functions.https.onRequest((req, res) => {
+  let ref = admin.database().ref('Items');
+  let item;
+
+  cors(req, res, () => {
+    if (req.method == "POST") {
+      item = req.body;
+
+      ref.once('value').then(function(snapshot) {
+        let agregado = false;
+        snapshot.forEach(function(childSnapshot) {
+          let itemCode = childSnapshot.val().itemCode;
+          if(item.itemCode.trim() == itemCode){
+            let refItem = admin.database().ref('Items/'+childSnapshot.key);
+            item.itemCode = item.itemCode.trim();
+            refItem.update(item);
+            agregado = true;
+          }
+        });
+        if(!agregado){
+          item.itemCode = item.itemCode.trim();
+          ref.push(item);
+          res.jsonp({code : 1, desc :  "Item added"});
+          refLog.push({ time :  ""+ new Date() ,log  : "Try - Success : Items Added/updated on UpdateItem function, path : " + req.path + " from : " + req.ip});
+        }else{
+          res.jsonp({code : 0, desc : "Item Updated"});
+          refLog.push({ time :  ""+ new Date() ,log  : "Try - Success : Item Added/updated on UpdateItem function, path : " + req.path + " from : " + req.ip});
+
+        }
+      });
+
+    }else{
+      res.jsonp({code : 0, desc : "you need to send a jsossn object trought POST method"});
+
+      refLog.push({ time :  ""+ new Date() ,log  : "Try - Failed : Item sent by Get Method on UpdateItem function" + req.path + " from : " + req.ip});
+    }
+
+  });
+});
+exports.addListItems = functions.https.onRequest((req, res) => {
+  let ref = admin.database().ref('Items');
+  var respLog = "";
+
+  cors(req, res, () => {
+    let variables;
+    if (req.method == "POST") {
+      variables = req.body;
+      let contNews = 0;
+      let contUpda = 0;
+      let newItems = [];
+
+      ref.once('value').then(function(snapshot) {
+        variables.map((item)=>{
+          let agregado = false;
+          snapshot.forEach(function(childSnapshot) {
+              let itemCode = childSnapshot.val().itemCode;
+              //itemCode = itemCode.trim();
+              let refItem = admin.database().ref('Items/'+childSnapshot.key);
+                newItems.push(itemCode);
+                if(item.itemCode.trim() == itemCode){
+                  item.itemCode = item.itemCode.trim();
+                  refItem.update(item);
+                  contUpda++;
+                  agregado = true;
+                }
+          });
+          if(!agregado){
+            item.itemCode = item.itemCode.trim();
+            ref.push(item);
+            contNews++;
+          }
+        });
+        refLog.push({ time :  ""+ new Date() ,log  : "Try - Success : Items Added/updated on addListItems function, path : " + req.path + " from : " + req.ip});
+        res.jsonp({code : 1, desc : contNews + " Nuevos items agregados, " + contUpda +" items actualizados"});
+      });
+    }else{
+      variables = req.query;
+
+      res.jsonp({code : 0, desc : contNews + " you need to send a jsossn object"});
+      refLog.push({ time :  ""+ new Date() ,log  : "Try - Failed : Items sent by Get Method on addListItems function" + req.path + " from : " + req.ip});
+    }
+
+    respLog = "";
+  });
+});
+
+exports.updateCategoriesItem =functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
+    if(req.method == "POST"){
+      //res.jsonp({value : "funciono"})
+
+    }else{
+      res.send("Entro");
+    }
+
+  });
+});
+
+exports.updateHomeContentItem =functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
+    if(req.method == "POST"){
+      res.jsonp({value : "funciono"})
+
+    }else{
+      res.send("Entro");
+    }
+
+  });
+});
+exports.deleteHomeContentItem =functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
+    if(req.method == "POST"){
+      res.jsonp({value : "funciono"})
+
+    }else{
+      res.send("Entro");
+    }
+
+  });
+});
 
 
+
+exports.deleteCategoriesItem =functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
+    if(req.method == "POST"){
+      //res.jsonp({value : "funciono"})
+
+    }else{
+      res.send("Entro");
+    }
+
+  });
+});
+exports.updateCategoriesList =functions.https.onRequest((req, res) => {
+  cors(req, res, () => {
+    if(req.method == "POST"){
+      //res.jsonp({value : "funciono"})
+
+    }else{
+      res.send("Entro");
+    }
+
+  });
+});
+
+exports.generateThumbnail = functions.storage.bucket('thomasmore-44171.appspot.com').object().onChange(event => {
+  //let ref = admin.database().ref('/images');
+  //let ref = admin.database().ref('Items');
+  const object = event.data;
+  if(object.metadata){
+    if(object.metadata.itemCode){
+      let refItem = admin.database().ref('Items/'+object.metadata.itemCode);
+      let item = {};
+      item[object.metadata.key] ={ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name };
+       refItem.once('value').then(function(snapshot) {
+         if(snapshot.hasChild("images")){
+           let refItemImages = admin.database().ref('Items/'+object.metadata.itemCode+'/images');
+           refItemImages.update(item);
+         }else{
+           refItem.update({"images":item});
+         }
+       });
+    }
+  }
 
 });

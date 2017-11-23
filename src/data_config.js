@@ -39,6 +39,6 @@ export const configFirebase = {
     authDomain: "thomasmore-44171.firebaseapp.com",
     databaseURL: "https://thomasmore-44171.firebaseio.com",
     projectId: "thomasmore-44171",
-    storageBucket: "",
+    storageBucket: "thomasmore-44171.appspot.com",
     messagingSenderId: "4231149970"
   };

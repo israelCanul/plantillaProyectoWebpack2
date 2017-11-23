@@ -5,7 +5,7 @@ import Bodymovin from 'bodymovin';
 
 // redux libraries
 import {connect } from 'react-redux';
-import {fetchTours} from '../actions/index';
+import {fetchTours,uploadImageToSection} from '../actions/index';
 
 //importamos los estilos
 import '../../scss/app.scss';
@@ -32,13 +32,17 @@ class Index extends Component{
       openCompare : false,
       linkTourBanner : "#",
     }
-
+    this.inputFileChange = this.inputFileChange.bind(this);
   }
   componentDidMount(){
 
   }
    componentWillMount(){
      this.props.fetchTours();
+   }
+   inputFileChange(event){
+    
+    this.props.uploadImageToSection(event.target.files,"tours/756A/imagenPrincipal","-Kz5edxuFYokkAVTxZNl","imagenPrincipal");
    }
    render(){
 
@@ -51,7 +55,9 @@ class Index extends Component{
           items={itemsMenu}
           phone={configApp.phone}/>
         <div className="indexPage row margin-out-bottom">
-          {this.props.data.tours?this.props.data.tours.categories[0].name:""}
+
+          <input ref={i=>this.inputFile= i } onChange={this.inputFileChange} name="myFile" type="file" multiple/>
+
         </div>
       <Footer
             logo="http://www.thomasmoretravel.com/img/logoTMT.png"
@@ -67,4 +73,4 @@ class Index extends Component{
 function mapStateToProps(state) {
   return {data: state.data,formulario : state.formulario};
 }
-export default connect(mapStateToProps, {fetchTours})(Index);
+export default connect(mapStateToProps, {fetchTours,uploadImageToSection})(Index);
