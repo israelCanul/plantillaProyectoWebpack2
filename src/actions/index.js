@@ -23,14 +23,15 @@ export function fetchTours(){
   };
 }
 
-export function uploadImageToSection(file,section,itemCode,nameOnBD){
+export function uploadImageToSection(file,section,itemCode,array){
 
-
-console.log(file.lenght);
   return (dispatch) => {
-      if(file.length == 1){
+    let getNameOnBD = section.split("/");
+    let nameOnBD = getNameOnBD.pop();
+
+      if(array == 0){
         let storageTours = Firebase.storage().ref(section);
-        console.log(section);
+
         let archivoFile = file[0];
         let metaData = {
           contentType: archivoFile.type,
@@ -46,31 +47,28 @@ console.log(file.lenght);
                payload : []
              });
           });
-
-      }else if(file.length > 1){
-          
-          file.map((fileImage,index)=>{
-            let storageTours = Firebase.storage().ref(section+"-"+index);
-            let archivoFile = fileImage;
-            let metaData = {
-              contentType: archivoFile.type,
-              customMetadata: {
-                'itemCode': itemCode,
-                'name': archivoFile.name,
-                'array': index.toString(),
-                'key' : nameOnBD
-              }
+      }else{
+        for (var i = 0; i < file.length; i++) {
+          let index = i;
+          let storageTours = Firebase.storage().ref(section+"-"+index);
+          let archivoFile = file[i];
+          let metaData = {
+            contentType: archivoFile.type,
+            customMetadata: {
+              'itemCode': itemCode,
+              'name': archivoFile.name,
+              'array': index.toString(),
+              'key' : nameOnBD
             }
-            storageTours.put(archivoFile,metaData).then(function(snapshot) {
+          }
+          storageTours.put(archivoFile,metaData).then(function(snapshot){
               dispatch({
                  type: UPLOADIMAGESECTION,
                  payload : []
                });
-            });
           });
+        }
       }
   };
-  // let subida = storageTours.put(archivoFile,metaData);
-
 
 }

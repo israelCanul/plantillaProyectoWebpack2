@@ -204,20 +204,58 @@ exports.generateThumbnail = functions.storage.bucket('thomasmore-44171.appspot.c
   //let ref = admin.database().ref('/images');
   //let ref = admin.database().ref('Items');
   const object = event.data;
-  if(object.metadata){
+  if(object.resourceState == "exists"){
+    if(object.metadata){
+      if(object.metadata.itemCode){
+        let refItem = admin.database().ref('Items/'+object.metadata.itemCode);
+
+        let item = {};
+        item[object.metadata.key] ={ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name , data : object};
+
+        refItem.once('value').then(function(snapshot) {
+          if(object.metadata.itemCode){
+            if(object.metadata.array){
+              let refItemImagesGall = admin.database().ref('Items/'+object.metadata.itemCode+'/images/'+object.metadata.key);
+              if(snapshot.hasChild("images")){
+                //let refItemImagesGall = admin.database().ref('Items/'+object.metadata.itemCode+'/images/'+object.metadata.key);
+                // if(snapshot.child("images").hasChild(object.metadata.key)){
+                //   refItemImagesGall.child(object.metadata.key+"-"+object.metadata.array).set({ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name });
+                // }else{
+                //   //let refItemImages = admin.database().ref('Items/'+object.metadata.itemCode+'/images/'+object.metadata.key);
+                //   // item[object.metadata.key] = [{ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name }];
+                //   // refItemImagesGall.update(item);
+                //   refItemImagesGall.child(object.metadata.key+"-"+object.metadata.array).set({ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name });
+                // }
+
+                refItemImagesGall.child(object.metadata.key+"-"+object.metadata.array).set({ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name, data : object});
+              }else{
+                //let refItemImagesGall = admin.database().ref('Items/'+object.metadata.itemCode+'/images/'+object.metadata.key);
+                refItemImagesGall.child(object.metadata.key+"-"+object.metadata.array).set({ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name, data : object });
+                //item[object.metadata.key] = [{ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name }];
+                //refItem.update({"images":item});
+              }
+            }else{
+              if(snapshot.hasChild("images")){
+                let refItemImages = admin.database().ref('Items/'+object.metadata.itemCode+'/images');
+                refItemImages.update(item);
+              }else{
+                refItem.update({"images":item});
+              }
+            }
+          }
+        });
+
+      }
+    }
+  }else{
     if(object.metadata.itemCode){
-      let refItem = admin.database().ref('Items/'+object.metadata.itemCode);
-      let item = {};
-      item[object.metadata.key] ={ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name };
-       refItem.once('value').then(function(snapshot) {
-         if(snapshot.hasChild("images")){
-           let refItemImages = admin.database().ref('Items/'+object.metadata.itemCode+'/images');
-           refItemImages.update(item);
-         }else{
-           refItem.update({"images":item});
-         }
-       });
+      if(object.metadata.array){
+        let refItemImagesGall = admin.database().ref('Items/'+object.metadata.itemCode+'/images/'+object.metadata.key+"/"+object.metadata.key+"-"+object.metadata.array);
+        refItemImagesGall.remove()
+      }else{
+        let refItemImages = admin.database().ref('Items/'+object.metadata.itemCode+'/images/'+object.metadata.key);
+        refItemImages.remove();
+      }
     }
   }
-
 });

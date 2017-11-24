@@ -33,6 +33,7 @@ class Index extends Component{
       linkTourBanner : "#",
     }
     this.inputFileChange = this.inputFileChange.bind(this);
+    this.inputFileChange2 = this.inputFileChange2.bind(this);
   }
   componentDidMount(){
 
@@ -41,8 +42,12 @@ class Index extends Component{
      this.props.fetchTours();
    }
    inputFileChange(event){
-    
-    this.props.uploadImageToSection(event.target.files,"tours/756A/imagenPrincipal","-Kz5edxuFYokkAVTxZNl","imagenPrincipal");
+
+    this.props.uploadImageToSection(event.target.files,"tours/756A/homeGallery","-Kz5edxuFYokkAVTxZNl",1);
+   }
+   inputFileChange2(event){
+
+    this.props.uploadImageToSection(event.target.files,"tours/756A/home","-Kz5edxuFYokkAVTxZNl",0);
    }
    render(){
 
@@ -57,6 +62,7 @@ class Index extends Component{
         <div className="indexPage row margin-out-bottom">
 
           <input ref={i=>this.inputFile= i } onChange={this.inputFileChange} name="myFile" type="file" multiple/>
+          <input ref={i=>this.inputFile2= i } onChange={this.inputFileChange2} name="myFile" type="file" />
 
         </div>
       <Footer
