@@ -10,7 +10,7 @@ export default function(state = INITIAL_STATE, action) {
   switch(action.type) {
   case FETCHTOURS:
     let arrayTours = {items : [],banner : [],categories : [] }
-    return { ...state, tours:action.payload};
+    return { ...state, item:action.payload};
   case UPLOADIMAGESECTION:
 
     return { ...state, image:[]};

@@ -2,13 +2,7 @@ var functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
 
-
-const gcs = require('@google-cloud/storage')();
-const spawn = require('child-process-promise').spawn;
-const path = require('path');
-const os = require('os');
-const fs = require('fs');
-
+const cors = require('cors')({origin :true });
 
 admin.initializeApp(functions.config().firebase);
 
@@ -17,6 +11,52 @@ const refLog = admin.database().ref('Log');
 //variables for log register [End]
 
 
+const newItem = {
+  "Categories" : [],
+  "EN" : {
+    "AddIcons" : [],
+    "Banner" : "",
+    "DisplayName:" : "",
+    "Gallery" : [],
+    "GeneralDescrip" : "",
+    "HomeBanner" : {
+      "Descript" : "",
+      "ImgBanner" : "",
+      "Subtitle" : "",
+      "Title" : ""
+    },
+    "Included" : [],
+    "MetaDesc" : "",
+    "Recomendation" : "",
+    "Schedules" : [],
+    "SocialMediaDescrip" : "",
+    "URL" : ""
+  },
+  "ES" : {
+  	"AddIcons" : [],
+    "Banner" : "",
+    "DisplayName:" : "",
+    "Gallery" : [],
+    "GeneralDescrip" : "",
+    "HomeBanner" : {
+      "Descript" : "",
+      "ImgBanner" : "",
+      "Subtitle" : "",
+      "Title" : ""
+    },
+    "Included" : [],
+    "MetaDesc" : "",
+    "Recomendation" : "",
+    "Schedules" : [],
+    "SocialMediaDescrip" : "",
+    "URL" : ""
+  }
+};
+
+const newItemCategories = {
+  DisplayName : "",
+  url: ""
+}
 
 
 exports.addNewMessage = functions.https.onRequest((req, res) => {
@@ -87,7 +127,6 @@ exports.UpdateItem = functions.https.onRequest((req, res) => {
 
     }else{
       res.jsonp({code : 0, desc : "you need to send a jsossn object trought POST method"});
-
       refLog.push({ time :  ""+ new Date() ,log  : "Try - Failed : Item sent by Get Method on UpdateItem function" + req.path + " from : " + req.ip});
     }
 
@@ -96,25 +135,24 @@ exports.UpdateItem = functions.https.onRequest((req, res) => {
 exports.addListItems = functions.https.onRequest((req, res) => {
   let ref = admin.database().ref('Items');
   var respLog = "";
-
   cors(req, res, () => {
     let variables;
     if (req.method == "POST") {
       variables = req.body;
       let contNews = 0;
       let contUpda = 0;
-      let newItems = [];
-
+      //let newItems = [];
       ref.once('value').then(function(snapshot) {
         variables.map((item)=>{
           let agregado = false;
           snapshot.forEach(function(childSnapshot) {
-              let itemCode = childSnapshot.val().itemCode;
+              let itemCode = childSnapshot.child("GENESIS").val().itemCode;
               //itemCode = itemCode.trim();
-              let refItem = admin.database().ref('Items/'+childSnapshot.key);
-                newItems.push(itemCode);
+              let refItem = admin.database().ref('Items/'+childSnapshot.key+"/GENESIS");
+                //newItems.push(itemCode);
                 if(item.itemCode.trim() == itemCode){
                   item.itemCode = item.itemCode.trim();
+                  let itemNuevo = Object.assign({ GENESIS : item},newItemCategories);
                   refItem.update(item);
                   contUpda++;
                   agregado = true;
@@ -122,7 +160,8 @@ exports.addListItems = functions.https.onRequest((req, res) => {
           });
           if(!agregado){
             item.itemCode = item.itemCode.trim();
-            ref.push(item);
+            let itemNuevo = Object.assign({ GENESIS : item}, newItem);
+            ref.push(itemNuevo);
             contNews++;
           }
         });
@@ -131,11 +170,9 @@ exports.addListItems = functions.https.onRequest((req, res) => {
       });
     }else{
       variables = req.query;
-
-      res.jsonp({code : 0, desc : contNews + " you need to send a jsossn object"});
+      res.jsonp({code : 0, desc : " you need to send a jsossn object"});
       refLog.push({ time :  ""+ new Date() ,log  : "Try - Failed : Items sent by Get Method on addListItems function" + req.path + " from : " + req.ip});
     }
-
     respLog = "";
   });
 });
@@ -205,48 +242,44 @@ exports.generateThumbnail = functions.storage.bucket('thomasmore-44171.appspot.c
   //let ref = admin.database().ref('Items');
   const object = event.data;
   if(object.resourceState == "exists"){
-    if(object.metadata){
-      if(object.metadata.itemCode){
-        let refItem = admin.database().ref('Items/'+object.metadata.itemCode);
+    if(object.metadata.itemCode){
+      let refItem = admin.database().ref('Items/'+object.metadata.itemCode);
+      let item = {};
+      item[object.metadata.key] ={ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name , data : object};
+      refItem.once('value').then(function(snapshot) {
+        if(object.metadata.itemCode){
+          if(object.metadata.array){
+            let refItemImagesGall = admin.database().ref('Items/'+object.metadata.itemCode+'/images/'+object.metadata.key);
+            if(snapshot.hasChild("images")){
+              //let refItemImagesGall = admin.database().ref('Items/'+object.metadata.itemCode+'/images/'+object.metadata.key);
+              // if(snapshot.child("images").hasChild(object.metadata.key)){
+              //   refItemImagesGall.child(object.metadata.key+"-"+object.metadata.array).set({ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name });
+              // }else{
+              //   //let refItemImages = admin.database().ref('Items/'+object.metadata.itemCode+'/images/'+object.metadata.key);
+              //   // item[object.metadata.key] = [{ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name }];
+              //   // refItemImagesGall.update(item);
+              //   refItemImagesGall.child(object.metadata.key+"-"+object.metadata.array).set({ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name });
+              // }
 
-        let item = {};
-        item[object.metadata.key] ={ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name , data : object};
-
-        refItem.once('value').then(function(snapshot) {
-          if(object.metadata.itemCode){
-            if(object.metadata.array){
-              let refItemImagesGall = admin.database().ref('Items/'+object.metadata.itemCode+'/images/'+object.metadata.key);
-              if(snapshot.hasChild("images")){
-                //let refItemImagesGall = admin.database().ref('Items/'+object.metadata.itemCode+'/images/'+object.metadata.key);
-                // if(snapshot.child("images").hasChild(object.metadata.key)){
-                //   refItemImagesGall.child(object.metadata.key+"-"+object.metadata.array).set({ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name });
-                // }else{
-                //   //let refItemImages = admin.database().ref('Items/'+object.metadata.itemCode+'/images/'+object.metadata.key);
-                //   // item[object.metadata.key] = [{ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name }];
-                //   // refItemImagesGall.update(item);
-                //   refItemImagesGall.child(object.metadata.key+"-"+object.metadata.array).set({ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name });
-                // }
-
-                refItemImagesGall.child(object.metadata.key+"-"+object.metadata.array).set({ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name, data : object});
-              }else{
-                //let refItemImagesGall = admin.database().ref('Items/'+object.metadata.itemCode+'/images/'+object.metadata.key);
-                refItemImagesGall.child(object.metadata.key+"-"+object.metadata.array).set({ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name, data : object });
-                //item[object.metadata.key] = [{ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name }];
-                //refItem.update({"images":item});
-              }
+              refItemImagesGall.child(object.metadata.key+"-"+object.metadata.array).set({ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name, data : object});
             }else{
-              if(snapshot.hasChild("images")){
-                let refItemImages = admin.database().ref('Items/'+object.metadata.itemCode+'/images');
-                refItemImages.update(item);
-              }else{
-                refItem.update({"images":item});
-              }
+              //let refItemImagesGall = admin.database().ref('Items/'+object.metadata.itemCode+'/images/'+object.metadata.key);
+              refItemImagesGall.child(object.metadata.key+"-"+object.metadata.array).set({ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name, data : object });
+              //item[object.metadata.key] = [{ url :'https://firebasestorage.googleapis.com/v0/b/thomasmore-44171.appspot.com/o/'+encodeURIComponent(object.name)+'?alt=media&token='+object.metadata.firebaseStorageDownloadTokens, ref : object.name }];
+              //refItem.update({"images":item});
+            }
+          }else{
+            if(snapshot.hasChild("images")){
+              let refItemImages = admin.database().ref('Items/'+object.metadata.itemCode+'/images');
+              refItemImages.update(item);
+            }else{
+              refItem.update({"images":item});
             }
           }
-        });
-
-      }
+        }
+      });
     }
+
   }else{
     if(object.metadata.itemCode){
       if(object.metadata.array){

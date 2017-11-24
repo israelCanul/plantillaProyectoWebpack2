@@ -10,7 +10,7 @@ import {configFirebase} from '../data_config';
 
 
 Firebase.initializeApp(configFirebase);
-let dataTours  =  Firebase.database().ref('/dataTours');
+let dataTours  =  Firebase.database().ref('/Items/-Kz5edxuFYokkAVTxZNl');
 //let storageTours = Firebase.storage().ref('toursitos/petos');
 export function fetchTours(){
   return (dispatch) => {
@@ -22,6 +22,12 @@ export function fetchTours(){
     })
   };
 }
+export function deleteImage(ref){
+  return (dispatch) => Firebase.storage().ref(ref).delete();
+}
+
+
+
 
 export function uploadImageToSection(file,section,itemCode,array){
 
